@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { MessageSquare, Users, CircleDot, Settings } from 'lucide-react';
+import { MessageSquare, Users, Activity, Settings } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -15,7 +15,7 @@ import {
 
 const navItems = [
   { href: '/chats', label: 'Chats', icon: MessageSquare },
-  { href: '/status', label: 'Status', icon: CircleDot },
+  { href: '/status', label: 'Status', icon: Activity },
   { href: '/contacts', label: 'Contacts', icon: Users },
   { href: '/settings', label: 'Settings', icon: Settings },
 ];

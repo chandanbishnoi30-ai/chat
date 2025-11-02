@@ -1,4 +1,6 @@
-import { Plus, CircleDot } from 'lucide-react';
+'use client';
+
+import { Plus, Activity } from 'lucide-react';
 import { statuses, users } from '@/lib/data';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -72,7 +74,7 @@ export default function StatusPage() {
       </div>
       <div className="hidden flex-1 items-center justify-center bg-background md:flex">
         <div className="text-center text-muted-foreground">
-            <CircleDot className="mx-auto h-24 w-24 opacity-50" />
+            <Activity className="mx-auto h-24 w-24 opacity-50" />
             <h2 className="mt-4 text-xl font-semibold">Click on a contact to view their status</h2>
         </div>
       </div>
