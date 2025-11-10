@@ -242,7 +242,7 @@ export default function ChatView({ chat, currentUser }: ChatViewProps) {
                     {chat.type === 'group' && !isCurrentUser && <p className="text-xs font-bold text-accent mb-1">{sender?.name}</p>}
                     <p className="text-sm break-words">{message.text}</p>
                     <div className="mt-1 flex items-center justify-end gap-1.5">
-                        <p className={cn("text-xs", isCurrentUser ? "text-primary-foreground/70" : "text-muted-foreground")}>
+                        <p suppressHydrationWarning className={cn("text-xs", isCurrentUser ? "text-primary-foreground/70" : "text-muted-foreground")}>
                             {format(new Date(message.timestamp), 'p')}
                         </p>
                         {renderMessageStatus(message)}
