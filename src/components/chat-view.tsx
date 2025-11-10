@@ -24,7 +24,7 @@ function SmartReplySuggestions({ lastMessage, onSuggestionClick }: { lastMessage
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        if (lastMessage && lastMessage.senderId !== 'user-me') {
+        if (lastMessage && lastMessage.senderId !== 'user-me' && lastMessage.senderId !== 'user-bot') {
             setLoading(true);
             setSuggestions([]);
             generateSmartReplySuggestions({ message: lastMessage.text })
@@ -68,6 +68,38 @@ export default function ChatView({ chat, currentUser }: ChatViewProps) {
   const [inputValue, setInputValue] = useState('');
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const otherUser = chat.type === 'private' ? chat.members.find(m => m.id !== currentUser.id) : null;
+  const isBotChat = otherUser?.id === 'user-bot';
+
+  const handleBotReply = async (userMessage: string) => {
+    try {
+      const response = await generateSmartReplySuggestions({ message: userMessage, context: 'You are a helpful assistant named Abhay Jatan.' });
+      const botMessageText = response.suggestions[0] || "I'm not sure how to respond to that.";
+
+      const botMessage: Message = {
+        id: `msg-${Date.now()}`,
+        senderId: 'user-bot',
+        text: botMessageText,
+        timestamp: new Date().toISOString(),
+        status: 'read',
+        type: 'text',
+      };
+
+      setMessages(prev => [...prev, botMessage]);
+
+    } catch (error) {
+      console.error("Error generating bot reply:", error);
+      const errorMessage: Message = {
+        id: `msg-${Date.now()}`,
+        senderId: 'user-bot',
+        text: "Sorry, I'm having trouble connecting. Please try again later.",
+        timestamp: new Date().toISOString(),
+        status: 'read',
+        type: 'text',
+      };
+      setMessages(prev => [...prev, errorMessage]);
+    }
+  }
+
 
   useEffect(() => {
     if (scrollAreaRef.current) {
@@ -88,6 +120,9 @@ export default function ChatView({ chat, currentUser }: ChatViewProps) {
       type: 'text',
     };
     setMessages(prev => [...prev, newMessage]);
+    if (isBotChat) {
+      setTimeout(() => handleBotReply(inputValue), 1000);
+    }
     setInputValue('');
   };
   
@@ -103,6 +138,9 @@ export default function ChatView({ chat, currentUser }: ChatViewProps) {
         type: 'text',
       };
       setMessages(prev => [...prev, newMessage]);
+      if (isBotChat) {
+        setTimeout(() => handleBotReply(suggestion), 1000);
+      }
   }
 
   const renderMessageStatus = (message: Message) => {
@@ -132,7 +170,7 @@ export default function ChatView({ chat, currentUser }: ChatViewProps) {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          {chat.type === 'private' && (
+          {chat.type === 'private' && !isBotChat && (
             <>
               <Button variant="ghost" size="icon">
                 <Phone className="h-5 w-5" />

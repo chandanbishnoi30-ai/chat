@@ -10,11 +10,25 @@ export const users: User[] = [
   { id: 'user-3', name: 'Charlie', avatarUrl: 'https://picsum.photos/seed/3/200/200', onlineStatus: 'away' },
   { id: 'user-4', name: 'Diana', avatarUrl: 'https://picsum.photos/seed/4/200/200', onlineStatus: 'online' },
   { id: 'user-5', name: 'Eve', avatarUrl: 'https://picsum.photos/seed/5/200/200', onlineStatus: 'offline' },
+  { id: 'user-bot', name: 'Abhay Jatan', avatarUrl: 'https://picsum.photos/seed/bot/200/200', onlineStatus: 'online' },
 ];
 
 export const contacts: Contact[] = users.filter(u => u.id !== 'user-me');
 
 export const chats: Chat[] = [
+  {
+    id: 'chat-bot',
+    type: 'private',
+    name: 'Abhay Jatan',
+    avatarUrl: users.find(u => u.id === 'user-bot')!.avatarUrl,
+    members: [users.find(u => u.id === 'user-me')!, users.find(u => u.id === 'user-bot')!],
+    messages: [
+      { id: 'msg-bot-1', senderId: 'user-bot', text: 'Hello! I am Abhay Jatan, your personal assistant. How can I help you today?', timestamp: subMinutes(now, 10).toISOString(), status: 'read', type: 'text' },
+    ],
+    unreadCount: 1,
+    isMuted: false,
+    isPinned: true,
+  },
   {
     id: 'chat-1',
     type: 'private',
