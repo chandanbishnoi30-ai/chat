@@ -72,9 +72,24 @@ export default function ChatView({ chat, currentUser }: ChatViewProps) {
 
   const handleBotReply = async (userMessage: string) => {
     let botMessageText: string;
+    const lowerCaseMessage = userMessage.toLowerCase().trim();
 
-    if (userMessage.toLowerCase().trim() === 'hello') {
+    if (lowerCaseMessage === 'hello') {
       botMessageText = 'yes how can i help you';
+      const botMessage: Message = {
+        id: `msg-${Date.now()}`,
+        senderId: 'user-bot',
+        text: botMessageText,
+        timestamp: new Date().toISOString(),
+        status: 'read',
+        type: 'text',
+      };
+      setMessages(prev => [...prev, botMessage]);
+      return;
+    }
+
+    if (lowerCaseMessage === 'give me some idea') {
+      botMessageText = 'chulu bhar pani me dub mero';
       const botMessage: Message = {
         id: `msg-${Date.now()}`,
         senderId: 'user-bot',
