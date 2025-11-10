@@ -71,9 +71,25 @@ export default function ChatView({ chat, currentUser }: ChatViewProps) {
   const isBotChat = otherUser?.id === 'user-bot';
 
   const handleBotReply = async (userMessage: string) => {
+    let botMessageText: string;
+
+    if (userMessage.toLowerCase().trim() === 'hello') {
+      botMessageText = 'yes how can i help you';
+      const botMessage: Message = {
+        id: `msg-${Date.now()}`,
+        senderId: 'user-bot',
+        text: botMessageText,
+        timestamp: new Date().toISOString(),
+        status: 'read',
+        type: 'text',
+      };
+      setMessages(prev => [...prev, botMessage]);
+      return;
+    }
+
     try {
       const response = await generateSmartReplySuggestions({ message: userMessage, context: 'You are a helpful assistant named Abhay Jatan.' });
-      const botMessageText = response.suggestions[0] || "I'm not sure how to respond to that.";
+      botMessageText = response.suggestions[0] || "I'm not sure how to respond to that.";
 
       const botMessage: Message = {
         id: `msg-${Date.now()}`,
