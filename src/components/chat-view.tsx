@@ -116,6 +116,20 @@ export default function ChatView({ chat, currentUser }: ChatViewProps) {
       return;
     }
 
+    if (lowerCaseMessage === 'study') {
+      botMessageText = 'Harshit beta chemistry ki file is janam me ho jayegi kya';
+      const botMessage: Message = {
+        id: `msg-${Date.now()}`,
+        senderId: 'user-bot',
+        text: botMessageText,
+        timestamp: new Date().toISOString(),
+        status: 'read',
+        type: 'text',
+      };
+      setMessages(prev => [...prev, botMessage]);
+      return;
+    }
+
     try {
       const response = await generateSmartReplySuggestions({ message: userMessage, context: 'You are a helpful assistant named Abhay Jatan.' });
       botMessageText = response.suggestions[0] || "I'm not sure how to respond to that.";
