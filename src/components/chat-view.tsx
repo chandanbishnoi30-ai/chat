@@ -101,6 +101,20 @@ export default function ChatView({ chat, currentUser }: ChatViewProps) {
       setMessages(prev => [...prev, botMessage]);
       return;
     }
+    
+    if (lowerCaseMessage === 'game') {
+      botMessageText = 'harshit beta padh le';
+      const botMessage: Message = {
+        id: `msg-${Date.now()}`,
+        senderId: 'user-bot',
+        text: botMessageText,
+        timestamp: new Date().toISOString(),
+        status: 'read',
+        type: 'text',
+      };
+      setMessages(prev => [...prev, botMessage]);
+      return;
+    }
 
     try {
       const response = await generateSmartReplySuggestions({ message: userMessage, context: 'You are a helpful assistant named Abhay Jatan.' });
